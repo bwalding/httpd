@@ -16,9 +16,11 @@
 
 require 'httpd/base'
 require 'httpd/raw'
+require 'httpd/block'
 require 'httpd/element'
 require 'httpd/httpd'
 require 'httpd/virtual_host'
 require 'httpd/directory'
+require 'httpd/location'
 
 require 'httpd/alias_helper'

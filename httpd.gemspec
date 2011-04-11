@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{httpd}
-  s.version = "0.0.1"
+  s.version = "0.0.2"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Walding"]
@@ -17,7 +17,15 @@ Gem::Specification.new do |s|
     "README.rdoc"
   ]
   s.files = [
+    ".document",
+    "Gemfile",
+    "Gemfile.lock",
+    "LICENSE.txt",
+    "README.rdoc",
+    "Rakefile",
     "VERSION",
+    "httpd.gemspec",
+    "lib/httpd.rb",
     "lib/httpd/alias_helper.rb",
     "lib/httpd/base.rb",
     "lib/httpd/conf.rb",
@@ -27,6 +35,10 @@ Gem::Specification.new do |s|
     "lib/httpd/raw.rb",
     "lib/httpd/raw_helper.rb",
     "lib/httpd/virtual_host.rb",
+    "test-httpd.conf",
+    "test/basic_test.rb",
+    "test/basic_test_basic.txt",
+    "test/helper.rb",
     "test/load_test.rb",
     "test/test2.rb"
   ]

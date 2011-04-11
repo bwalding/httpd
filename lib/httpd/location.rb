@@ -14,14 +14,14 @@
 #  limitations under the License.
 ################################################################################
 module Httpd
-  class Directory < Block
+  class Location < Block
     
     def to_conf
       lines = []
       lines << "" # a gap before each one
-      lines << "  <Directory #{@path}>"
-      lines << indent('  ', super())
-      lines << "  </Directory>"
+      lines << "  <Location #{@path}>"
+      lines += indent('  ', super())
+      lines << "  </Location>"
       return lines
     end
 

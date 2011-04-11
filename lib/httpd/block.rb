@@ -14,45 +14,43 @@
 #  limitations under the License.
 ################################################################################
 module Httpd
-  class Base
-    attr_reader :elements
+  class Block < Base
+    attr_reader :path
     
-    def initialize
-      @elements = []
+    def initialize(path)
+      super()
+      @path = path
     end
     
-    # Not necessarily a base element, but good enough
-    def include_file(spec)
-      elements << Raw.new("  Include '#{spec}'")
+    def options(text)
+      raw("  Options +Indexes")
     end
     
-    def comment(text)
-      elements << Raw.new("  # #{text}")
+    def directory_index(text)
+      raw("  DirectoryIndex #{text}")
     end
     
-    def raw(text)
-      elements << Raw.new(text)
+    def limit_except(verbs, content)
+      limit_generic("LimitExcept", verbs, content)
     end
     
-    def allow_override(text)
-      element << Raw.new("  AllowOverride #{text}")
-    end
-
-    def elements 
-      return @elements
-    end
+    def limit(verbs, content)
+      limit_generic("Limit", verbs, content)
+    end   
     
-  protected
-    
-    def to_conf
-      @elements.collect { |element|
-        element.to_conf
-      }.flatten
-    end
-    
-    def indent(indent, lines)
-      lines.flatten!
-      lines.collect { |line| indent + line }
+  private
+  
+    def limit_generic(mode, verbs, content)
+      if verbs.is_a?(Array)
+        verbs = verbs.collect { |verb| verb.to_s.upcase }.join(' ')
+      end
+  
+      verbs = ' ' + verbs unless verbs.strip.empty?
+  
+      raw "  <#{mode}#{verbs}>"
+      raw indent('    ', content.split("\n"))
+      raw "  </#{mode}>"
     end
   end
 end
+    

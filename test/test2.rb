@@ -15,7 +15,7 @@
 ################################################################################
 
 $: << File.dirname(__FILE__) + "/../lib"
-require 'httpd/init.rb'
+require 'httpd'
 require 'test/unit'
 
 class ProjectVirtualHost < ::Httpd::VirtualHost
@@ -75,10 +75,19 @@ class Httpd2Test < Test::Unit::TestCase
     httpd.disclaimer 'This configuration is generated automatically and will be overwritten'
     
     httpd.elements << ProjectVirtualHost.new('graham') do
+      location('/location') do
+        directory_index 'location.html'
+      end
+
+      directory('/directory') do
+        directory_index 'directory.html'
+      end
     end
+    
     httpd.elements << RedirectToSSLVirtualHost.new('graham.example.com') do
       server_alias "bumpkin.example.com"
     end
+    
     
     puts "\n# Configuration:"
     puts httpd.to_conf.join("\n")
