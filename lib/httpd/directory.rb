@@ -15,19 +15,50 @@
 ################################################################################
 module Httpd
   class Directory < Base
-    attr_reader :directory
+    attr_reader :path
     
-    def initialize(directory)
+    def initialize(path)
       super()
-      @directory = directory
+      @path = path
+    end
+    
+    def options(text)
+      raw("  Options +Indexes")
+    end
+    
+    def directory_index(text)
+      raw("  DirectoryIndex #{text}")
+    end
+    
+    def limit_except(verbs, content)
+      limit_generic("LimitExcept", verbs, content)
+    end
+    
+    def limit(verbs, content)
+      limit_generic("Limit", verbs, content)
     end
     
     def to_conf
       lines = []
-      
-      lines << "  <Directory #{@directory}>"
+      lines << "" # a gap before each one
+      lines << "  <Directory #{@path}>"
+      lines << indent('  ', super())
       lines << "  </Directory>"
-      return lines.join("\n")
+      return lines
+    end
+    
+  private
+  
+    def limit_generic(mode, verbs, content)
+      if verbs.is_a?(Array)
+        verbs = verbs.collect { |verb| verb.to_s.upcase }.join(' ')
+      end
+  
+      verbs = ' ' + verbs unless verbs.strip.empty?
+  
+      raw "  <#{mode}#{verbs}>"
+      raw indent('    ', content.split("\n"))
+      raw "  </#{mode}>"
     end
   end
 end

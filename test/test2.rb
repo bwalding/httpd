@@ -20,20 +20,28 @@ require 'test/unit'
 
 class ProjectVirtualHost < ::Httpd::VirtualHost
   def initialize(key, &block )
+    super( '*:443' )
     @key = key
-    super('*:80') do 
-      server_name "#{key}.example.com"
-      &block
-    end
+    server_name "#{key}.example.com"
+    self.instance_eval(&block)
   end
   
-  def to_conf
+end
+
+# Provides a basic vhost that redirects all traffic to the https version
+class RedirectToSSLVirtualHost < ::Httpd::VirtualHost
+  def initialize(hostname, &block)
+    super( '*:80' )
+    self.instance_eval(&block)
+    
+    server_name hostname
+    raw "  RedirectPermanent / https://#{hostname}/"
   end
 end
 
 class Httpd2Test < Test::Unit::TestCase
 
-  def test_comprehensive
+  def txest_comprehensive
     httpd = ::Httpd::Httpd.new()
     httpd.disclaimer 'This configuration is generated automatically and will be overwritten'
     httpd.virtual_host do
@@ -55,6 +63,22 @@ class Httpd2Test < Test::Unit::TestCase
     end
     
     httpd.elements << ProjectVirtualHost.new('graham')
+    httpd.elements << RedirectToSSLVirtualHost.new('graham.example.com')
+    
+    puts "\n# Configuration:"
+    puts httpd.to_conf.join("\n")
+    puts "# Done"
+  end
+
+  def test_com
+    httpd = ::Httpd::Httpd.new()
+    httpd.disclaimer 'This configuration is generated automatically and will be overwritten'
+    
+    httpd.elements << ProjectVirtualHost.new('graham') do
+    end
+    httpd.elements << RedirectToSSLVirtualHost.new('graham.example.com') do
+      server_alias "bumpkin.example.com"
+    end
     
     puts "\n# Configuration:"
     puts httpd.to_conf.join("\n")

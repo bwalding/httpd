@@ -23,6 +23,7 @@ module Httpd
     attr_reader :interface
     attr_reader :server_name
     attr_reader :server_alias
+    attr_reader :server_admin
     attr_reader :document_root
     
     def initialize(interface)
@@ -40,15 +41,28 @@ module Httpd
       #@server_aliases << value
       elements << Raw.new("  ServerAlias #{value}")
     end
+    
+    def server_admin(value)
+      elements << Raw.new("  ServerAdmin #{value}")
+    end
 
     def document_root(value)
       #@document_root = value
       elements << Raw.new("  DocumentRoot #{value}")
     end
     
-    def directory(directory, &block)
-      elements << ::Httpd::Directory.new(directory)
+    def directory(path, &block)
+      directory = ::Httpd::Directory.new(path)
+      elements << directory
       directory.instance_eval(&block)
+    end
+    
+    def redirect_permanent(source, target)
+      elements << Raw.new("  RedirectPermanent #{sprintf('%-30s', source)} #{target}")
+    end
+
+    def redirect_match(source, target)
+      elements << Raw.new("  RedirectMatch #{sprintf('%-30s', source)} #{target}")
     end
     
     def to_conf

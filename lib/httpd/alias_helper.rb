@@ -17,11 +17,11 @@ module Httpd
   module AliasHelper
     
     def file_alias(source, target)
-      elements << Raw.new("Alias #{source} #{target}")
+      elements << Raw.new("  Alias #{source} #{target}")
     end
     
     def script_alias(source, target)
-      elements << Raw.new("ScriptAlias #{source} #{target}")
+      elements << Raw.new("  ScriptAlias #{source} #{target}")
     end
   end
 end

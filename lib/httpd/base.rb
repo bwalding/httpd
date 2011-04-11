@@ -27,7 +27,15 @@ module Httpd
     end
     
     def comment(text)
-      elements << Raw.new("# #{text}")
+      elements << Raw.new("  # #{text}")
+    end
+    
+    def raw(text)
+      elements << Raw.new(text)
+    end
+    
+    def allow_override(text)
+      element << Raw.new("  AllowOverride #{text}")
     end
 
     def elements 

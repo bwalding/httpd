@@ -14,37 +14,35 @@
 #  limitations under the License.
 ################################################################################
 
-module Httpd
-  class Httpd < Base
-    attr_reader :disclaimer
-    blocks = []
-    
-    def initialize(&block)
-      super()
-      @virtual_hosts = []
-      @disclaimer = nil
-      if (block)
-        self.instance_eval(&block)
-      end
+class ::Httpd::Httpd < ::Httpd::Base
+  attr_reader :disclaimer
+  blocks = []
+  
+  def initialize(&block)
+    super()
+    @virtual_hosts = []
+    @disclaimer = nil
+    if (block)
+      self.instance_eval(&block)
     end
-    
-    def virtual_host(interface = '*:80', &block)
-      virtual_host = VirtualHost.new(interface)
-      elements << virtual_host
-      virtual_host.instance_eval(&block)
-    end
-    
-    def disclaimer(value)
-      @disclaimer = value
-    end
-    
-    # We don't indent the top level
-    def to_conf
-      content = []
-      content << "# " + @disclaimer + "\n" if @disclaimer
-      content += super()
-      return content
-    end
-    
   end
+  
+  def virtual_host(interface = '*:80', &block)
+    virtual_host = ::Httpd::VirtualHost.new(interface)
+    elements << virtual_host
+    virtual_host.instance_eval(&block)
+  end
+  
+  def disclaimer(value)
+    @disclaimer = value
+  end
+  
+  # We don't indent the top level
+  def to_conf
+    content = []
+    content << "# " + @disclaimer + "\n" if @disclaimer
+    content += super()
+    return content
+  end
+  
 end
