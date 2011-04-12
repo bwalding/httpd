@@ -45,4 +45,12 @@ class ::Httpd::Httpd < ::Httpd::Base
     return content
   end
   
+  # Runs a script file, generating a single Httpd::Httpd object as output
+  def self.execute(script)
+    script_data = IO.read(script)
+    httpd = Httpd::Httpd.new
+    eval(script_data, binding, script, 0)
+    return httpd
+  end
+
 end
