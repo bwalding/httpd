@@ -5,7 +5,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{httpd}
-  s.version = "0.0.3"
+  s.version = "0.0.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Ben Walding"]
@@ -40,6 +40,8 @@ Gem::Specification.new do |s|
     "test-httpd.conf",
     "test/basic_test.rb",
     "test/basic_test_basic.txt",
+    "test/execute_test.rb",
+    "test/execute_test_1.conf",
     "test/helper.rb",
     "test/load_test.rb",
     "test/test2.rb"
@@ -51,6 +53,7 @@ Gem::Specification.new do |s|
   s.summary = %q{Basic Ruby DSL for building HTTPD configuration}
   s.test_files = [
     "test/basic_test.rb",
+    "test/execute_test.rb",
     "test/helper.rb",
     "test/load_test.rb",
     "test/test2.rb"
