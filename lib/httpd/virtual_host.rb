@@ -57,11 +57,6 @@ module Httpd
       directory.instance_eval(&block)
     end
 
-    def location(path, &block)
-      location = ::Httpd::Location.new(path)
-      elements << location
-      location.instance_eval(&block)
-    end
     
     def redirect_permanent(source, target)
       elements << Raw.new("  RedirectPermanent #{sprintf('%-30s', source)} #{target}")

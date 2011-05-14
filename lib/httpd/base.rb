@@ -42,6 +42,12 @@ module Httpd
       return @elements
     end
     
+    def location(path, &block)
+      location = ::Httpd::Location.new(path)
+      elements << location
+      location.instance_eval(&block)
+    end
+    
   protected
     
     def to_conf
