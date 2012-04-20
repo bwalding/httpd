@@ -25,6 +25,11 @@ module Httpd
     def include_file(spec)
       elements << Raw.new("  Include '#{spec}'")
     end
+
+    # Apache HTTPD 2.4
+    def include_optional_file(spec)
+      elements << Raw.new("  IncludeOptional '#{spec}'")
+    end
     
     def comment(text)
       elements << Raw.new("  # #{text}")

@@ -15,7 +15,7 @@ require 'test/unit'
 class ExecuteTest < Test::Unit::TestCase
 
   def test_1
-    httpd = Httpd::Httpd.execute(File.dirname(__FILE__) + '/execute_test_1.conf')
+    httpd = Httpd::Httpd.execute(File.dirname(__FILE__) + '/execute_test_1.conf', binding)
     puts httpd.to_conf.join("\n")
   end
 
